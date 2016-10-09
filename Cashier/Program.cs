@@ -17,6 +17,14 @@ namespace Cashier
 
     public class Model
     {
+        public List<Category> Categories;
+        public Model(List<Item> items, Dictionary<string, Config> configs)
+        {
+            Categories = items.Select(item => {
+                var config = configs[item.Code];
+                return new Category(item, config);
+            }).ToList();
+        }
     }
 
     public class Category
@@ -29,8 +37,8 @@ namespace Cashier
 
         public Item Item { get; }
         public Config Config { get; }
+        public decimal SubtotalWithOutDiscount => Config.Price*Item.Amount;
     }
-
     public class Item
     {
         public Item(string code, int amount)
@@ -45,7 +53,7 @@ namespace Cashier
 
     public class Config
     {
-        public Config(string name, double price, string unit, List<Discount> discounts)
+        public Config(string name, decimal price, string unit, List<Discount> discounts)
         {
             Name = name;
             Price = price;
@@ -54,7 +62,7 @@ namespace Cashier
         }
 
         public string Name { get; }
-        public double Price { get; }
+        public decimal Price { get; }
         public string Unit { get; }
         public List<Discount> Discounts { get; }
     }
