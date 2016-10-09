@@ -45,8 +45,8 @@ namespace Cashier
         public string QuantityWithUnit => $"{Item.Quantity}{Config.Unit}";
         public decimal SubtotalWithOutDiscount => Config.Price*Item.Quantity;
         public decimal Subtotal => Config.Price*Item.Quantity;
-        public override string ToString() => 
-            $"名称: {Config.Name}, 数量: {Item.Quantity}, 单价: {Config.Price}(元), 小计: {Subtotal}(元)";
+        public string Show => 
+            $"名称: {Config.Name}, 数量: {Item.Quantity}, 单价: {Config.Price}(元), 小计: {Subtotal}(元)\n";
     }
     public class Item
     {
@@ -83,9 +83,13 @@ namespace Cashier
         {
             Model = model;
         }
-        public string Header => "***<没钱赚商店>购物清单***";
-        public string Splitter => "----------------------";
-        public string Footer => "**********************";
+        public string Header => "***<没钱赚商店>购物清单***\n";
+        public string Splitter => "----------------------\n";
+        public string Footer => "**********************\n";
+
+        public string RenderSummary => Model.Categories
+            .Select(c => c.Show)
+            .Aggregate((x, y) => x + y);
     }
 
     public enum Discount
