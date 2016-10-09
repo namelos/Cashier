@@ -13,8 +13,8 @@ namespace Cashier
     {
         public class CategoryTest
         {
-            public Item Item { get; set; } = Fixture.Item;
-            public Config Config { get; set; } = Fixture.Config;
+            public Item Item { get; } = Fixture.Item;
+            public Config Config { get; } = Fixture.Config;
             public Category Category { get; }
             public CategoryTest()
             {
@@ -31,13 +31,19 @@ namespace Cashier
             {
                 Equal(Category.SubtotalWithOutDiscount, 5);
             }
+            [Fact]
+            public void ShouldPrintCategorySummary()
+            {
+                Equal(Category.ToString(), 
+                    $"名称: {Config.Name}, 数量: {Item.Quantity}, 单价: {Config.Price}(元), 小计: {Category.Subtotal}(元)");
+            }
         }
 
         public class ModelTest
         {
             public Model Model { get; }
-            public List<Item> Items { get; set; } = Fixture.Items;
-            public Dictionary<string, Config> Configs { get; set; } = Fixture.Configs;
+            public List<Item> Items { get; } = Fixture.Items;
+            public Dictionary<string, Config> Configs { get; } = Fixture.Configs;
             public ModelTest()
             {
                 Model = new Model(Items, Configs);
