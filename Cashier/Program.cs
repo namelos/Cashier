@@ -41,19 +41,20 @@ namespace Cashier
 
         public Item Item { get; }
         public Config Config { get; }
-        public decimal SubtotalWithOutDiscount => Config.Price*Item.Amount;
-        public decimal Subtotal => Config.Price*Item.Amount;
+        public string QuantityWithUnit => $"{Item.Quantity}{Config.Unit}";
+        public decimal SubtotalWithOutDiscount => Config.Price*Item.Quantity;
+        public decimal Subtotal => Config.Price*Item.Quantity;
     }
     public class Item
     {
-        public Item(string code, int amount)
+        public Item(string code, int quantity)
         {
             Code = code;
-            Amount = amount;
+            Quantity = quantity;
         }
 
         public string Code { get; }
-        public int Amount { get; }
+        public int Quantity { get; }
     }
 
     public class Config
@@ -70,6 +71,15 @@ namespace Cashier
         public decimal Price { get; }
         public string Unit { get; }
         public List<Discount> Discounts { get; }
+    }
+
+    public class View
+    {
+        public Model Model { get; set; }
+        public View(Model model)
+        {
+            Model = model;
+        }
     }
 
     public enum Discount

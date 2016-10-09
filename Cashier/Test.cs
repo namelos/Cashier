@@ -13,12 +13,19 @@ namespace Cashier
     {
         public class CategoryTest
         {
+            public Item Item { get; set; } = Fixture.Item;
+            public Config Config { get; set; } = Fixture.Config;
             public Category Category { get; }
             public CategoryTest()
             {
-                Category = new Category(Fixture.Item, Fixture.Config);
+                Category = new Category(Item, Config);
             }
 
+            [Fact]
+            public void ShouldGetQuantityWithUnit()
+            {
+                Equal(Category.QuantityWithUnit, "5个");
+            }
             [Fact]
             public void ShouldCalculateSubtotalWithoutDiscount()
             {
@@ -29,15 +36,12 @@ namespace Cashier
         public class ModelTest
         {
             public Model Model { get; }
-            public List<Item> Items { get; set; }
-            public Dictionary<string, Config> Configs { get; set; }
+            public List<Item> Items { get; set; } = Fixture.Items;
+            public Dictionary<string, Config> Configs { get; set; } = Fixture.Configs;
             public ModelTest()
             {
-                Items = Fixture.Items;
-                Configs = Fixture.Configs;
                 Model = new Model(Items, Configs);
             }
-
             [Fact]
             public void ShouldInitCategoriesWithItemAndConfigs()
             {
@@ -48,12 +52,16 @@ namespace Cashier
                 Equal(Model.Categories[2].Item, Items[2]);    
                 Equal(Model.Categories[2].Config, Configs[Items[2].Code]);    
             }
-
             [Fact]
             public void ShouldCalculateTotal()
             {
                 Equal(Model.Total, 25);
             }
+        }
+
+        public class ViewTest
+        {
+            
         }
     }
 
