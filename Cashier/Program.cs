@@ -25,6 +25,10 @@ namespace Cashier
                 return new Category(item, config);
             }).ToList();
         }
+
+        public decimal Total => Categories
+            .Select(c => c.Subtotal)
+            .Aggregate((x, y) => x + y);
     }
 
     public class Category
@@ -38,6 +42,7 @@ namespace Cashier
         public Item Item { get; }
         public Config Config { get; }
         public decimal SubtotalWithOutDiscount => Config.Price*Item.Amount;
+        public decimal Subtotal => Config.Price*Item.Amount;
     }
     public class Item
     {

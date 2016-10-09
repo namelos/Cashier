@@ -48,6 +48,12 @@ namespace Cashier
                 Equal(Model.Categories[2].Item, Items[2]);    
                 Equal(Model.Categories[2].Config, Configs[Items[2].Code]);    
             }
+
+            [Fact]
+            public void ShouldCalculateTotal()
+            {
+                Equal(Model.Total, 25);
+            }
         }
     }
 
