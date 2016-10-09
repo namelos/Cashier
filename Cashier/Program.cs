@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace Cashier
 {
@@ -14,18 +15,48 @@ namespace Cashier
         }
     }
 
+    public class Model
+    {
+    }
+
+    public class Category
+    {
+        public Category(Item item, Config config)
+        {
+            Item = item;
+            Config = config;
+        }
+
+        public Item Item { get; }
+        public Config Config { get; }
+    }
+
     public class Item
     {
-        public string Code { get; set; }
-        public int Amount { get; set; }
+        public Item(string code, int amount)
+        {
+            Code = code;
+            Amount = amount;
+        }
+
+        public string Code { get; }
+        public int Amount { get; }
     }
 
     public class Config
     {
-        public string Name { get; set; }
-        public double Price { get; set; }
-        public string Unit { get; set; }
-        public List<Discount> Discounts { get; set; }
+        public Config(string name, double price, string unit, List<Discount> discounts)
+        {
+            Name = name;
+            Price = price;
+            Unit = unit;
+            Discounts = discounts;
+        }
+
+        public string Name { get; }
+        public double Price { get; }
+        public string Unit { get; }
+        public List<Discount> Discounts { get; }
     }
 
     public enum Discount
