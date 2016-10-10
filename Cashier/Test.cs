@@ -33,8 +33,8 @@ namespace Cashier
             [Fact]
             public void ShouldPrintCategorySummary()
             {
-                Equal(Category.ToString(), 
-                    $"名称: {Config.Name}, 数量: {Item.Quantity}, 单价: {Config.Price}(元), 小计: {Category.Subtotal}(元)");
+                Equal(Category.Show, 
+                    $"名称: {Config.Name}, 数量: {Item.Quantity}{Config.Unit}, 单价: {Config.Price}(元), 小计: {Category.Subtotal}(元)\n");
             }
         }
 
@@ -42,7 +42,7 @@ namespace Cashier
         {
             public Model Model { get; }
             public List<Item> Items { get; } = Fixture.Items;
-            public Dictionary<string, Config> Configs { get; } = Fixture.Configs;
+            public Dictionary<string, Config> Configs { get; } = Fixture.NoDiscountConfigs;
             public ModelTest()
             {
                 Model = new Model(Items, Configs);
@@ -64,6 +64,71 @@ namespace Cashier
             }
         }
 
+        public class DiscountTest
+        {
+            public class DiscountFormulaTest
+            {
+                [Fact]
+                public void ShouldReturnBothDiscountWhenThereAreBothOfDiscounts()
+                {
+                    var discountTypes = new List<DiscountType>
+                    {
+                        DiscountType.BuyTwoGetOneFree,
+                        DiscountType.NintyFivePercentDiscount
+                    };
+                    var discountFormula = new DiscountFormula(discountTypes).Discount;
+                    IsType<BothDiscount>(discountFormula);
+                }
+                [Fact]
+                public void ShouldReturnBuyTwoGetOneFreeWhenDiscountIsBuyTwoGetOneFree()
+                {
+                    var discountTypes = new List<DiscountType> { DiscountType.BuyTwoGetOneFree };
+                    var discountFormula = new DiscountFormula(discountTypes).Discount;
+                    IsType<BuyTwoGetOneFree>(discountFormula);
+                }
+                [Fact]
+                public void ShouldReturnNinetyFivePercentWhenDiscountIsNinetyFivePercent()
+                {
+                    var discountTypes = new List<DiscountType> { DiscountType.NintyFivePercentDiscount };
+                    var discountFormula = new DiscountFormula(discountTypes).Discount;
+                    IsType<NinetyFivePercent>(discountFormula);
+                }
+                [Fact]
+                public void ShouldReturnNoDiscountWhenThereIsNoDiscount()
+                {
+                    var discountTypes = new List<DiscountType>();
+                    var discountFormula = new DiscountFormula(discountTypes).Discount;
+                    IsType<NoDiscount>(discountFormula);
+                }
+            }
+            public class BuyTwoGetOneFreeTest
+            {
+                [Fact]
+                public void ShouldGiveOneFreeWhenBuyThree() =>
+                    Equal(new BuyTwoGetOneFree().Discount(1, 3), 2);
+
+                [Fact]
+                public void ShouldNotGiveAnyWhenBuyTwo() =>
+                    Equal(new BuyTwoGetOneFree().Discount(1, 2), 2);
+            }
+            public class NinetyFivePercentTest
+            {
+                [Fact]
+                public void ShouldCalculateNinetyFivePercent() =>
+                    Equal(new NinetyFivePercent().Discount(10, 10), 95);
+            }
+            public class BothDiscountTest
+            {
+                [Fact]
+                public void ShouldBuyTwoGiveOneFreeWhenBuyMoreThanTwo() =>
+                    Equal(new BothDiscount().Discount(1, 3), 2);
+
+                [Fact]
+                public void ShouldCalculateNinetyFivePercentDiscountWhenBuyLessThanThree() =>
+                    Equal(new BothDiscount().Discount(1, 2), 1.9m);
+            }
+        }
+
         public class ViewTest
         {
         }
@@ -78,12 +143,19 @@ namespace Cashier
             new Item ("ITEM00003", 2),
             new Item ("ITEM00005", 3),
         };
-        public static Config Config => new Config("羽毛球", 1, "个", new List<Discount> { Discount.BuyTwoGetOneFree } );
+        public static Config Config => new Config("羽毛球", 1, "个", new List<DiscountType> { DiscountType.BuyTwoGetOneFree } );
         public static Dictionary<string, Config> Configs => new Dictionary<string, Config>
         {
-            { "ITEM00001", new Config("羽毛球", 1m, "个", new List<Discount> { Discount.BuyTwoGetOneFree} ) },
-            { "ITEM00003", new Config("苹果",  5.5m, "斤", new List<Discount>()) },
-            { "ITEM00005", new Config("羽毛球",  3m, "瓶", new List<Discount> { Discount.BuyTwoGetOneFree} ) }
+            { "ITEM00001", new Config("羽毛球", 1m, "个", new List<DiscountType> { DiscountType.BuyTwoGetOneFree} ) },
+            { "ITEM00003", new Config("苹果",  5.5m, "斤", new List<DiscountType>()) },
+            { "ITEM00005", new Config("羽毛球",  3m, "瓶", new List<DiscountType> { DiscountType.BuyTwoGetOneFree} ) }
+        };
+
+        public static Dictionary<string, Config> NoDiscountConfigs => new Dictionary<string, Config>
+        {
+            { "ITEM00001", new Config("羽毛球", 1m, "个", new List<DiscountType>()) },
+            { "ITEM00003", new Config("苹果",  5.5m, "斤", new List<DiscountType>()) },
+            { "ITEM00005", new Config("羽毛球",  3m, "瓶", new List<DiscountType>()) }
         };
     }
 }
