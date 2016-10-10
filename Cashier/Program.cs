@@ -27,9 +27,11 @@ namespace Cashier
                 return new Category(item, config);
             }).ToList();
         }
-
         public decimal Total => Categories
             .Select(c => c.Subtotal)
+            .Aggregate((x, y) => x + y);
+        public decimal TotalSaved => Categories
+            .Select(c => c.Saved)
             .Aggregate((x, y) => x + y);
     }
 
@@ -109,21 +111,13 @@ namespace Cashier
         {
             if (discountTypes.Contains(DiscountType.BuyTwoGetOneFree) &&
                 discountTypes.Contains(DiscountType.NintyFivePercentDiscount))
-            {
                 Discount = new BothDiscount();
-            }
             else if (discountTypes.Contains(DiscountType.BuyTwoGetOneFree))
-            {
                 Discount = new BuyTwoGetOneFree();
-            }
             else if (discountTypes.Contains(DiscountType.NintyFivePercentDiscount))
-            {
                 Discount = new NinetyFivePercent();
-            }
             else
-            {
                 Discount = new NoDiscount();
-            }
         }
     }
 

@@ -19,42 +19,27 @@ namespace Cashier
             {
                 Category = new Category(Item, Config);
             }
-
             [Fact]
-            public void ShouldGetQuantityWithUnit()
-            {
-                Equal(Category.QuantityWithUnit, "5个");
-            }
-
+            public void ShouldGetQuantityWithUnit() 
+                => Equal(Category.QuantityWithUnit, "5个");
             [Fact]
-            public void ShouldCalculateSubtotal()
-            {
+            public void ShouldCalculateSubtotal() =>
                 Equal(Category.Subtotal, 4);
-            }
             [Fact]
-            public void ShouldCalculateSubtotalWithoutDiscount()
-            {
+            public void ShouldCalculateSubtotalWithoutDiscount() => 
                 Equal(Category.SubtotalWithOutDiscount, 5);
-            }
-
             [Fact]
-            public void ShouldCalculateSaved()
-            {
-                Equal(Category.Saved, 1);
-            }
+            public void ShouldCalculateSaved() => Equal(Category.Saved, 1);
             [Fact]
-            public void ShouldPrintCategorySummary()
-            {
-                Equal(Category.Show, 
-                    $"名称: {Config.Name}, 数量: {Item.Quantity}{Config.Unit}, 单价: {Config.Price}(元), 小计: {Category.Subtotal}(元)\n");
-            }
+            public void ShouldPrintCategorySummary() => Equal(Category.Show, 
+                $"名称: {Config.Name}, 数量: {Item.Quantity}{Config.Unit}, 单价: {Config.Price}(元), 小计: {Category.Subtotal}(元)\n");
         }
 
         public class ModelTest
         {
             public Model Model { get; }
             public List<Item> Items { get; } = Fixture.Items;
-            public Dictionary<string, Config> Configs { get; } = Fixture.NoDiscountConfigs;
+            public Dictionary<string, Config> Configs { get; } = Fixture.Configs;
             public ModelTest()
             {
                 Model = new Model(Items, Configs);
@@ -70,10 +55,9 @@ namespace Cashier
                 Equal(Model.Categories[2].Config, Configs[Items[2].Code]);    
             }
             [Fact]
-            public void ShouldCalculateTotal()
-            {
-                Equal(Model.Total, 25);
-            }
+            public void ShouldCalculateTotal() => Equal(Model.Total, 21);
+            [Fact]
+            public void ShouldCalculateTotalSaved() => Equal(Model.TotalSaved, 4);
         }
 
         public class DiscountTest
@@ -161,13 +145,6 @@ namespace Cashier
             { "ITEM00001", new Config("羽毛球", 1m, "个", new List<DiscountType> { DiscountType.BuyTwoGetOneFree} ) },
             { "ITEM00003", new Config("苹果",  5.5m, "斤", new List<DiscountType>()) },
             { "ITEM00005", new Config("羽毛球",  3m, "瓶", new List<DiscountType> { DiscountType.BuyTwoGetOneFree} ) }
-        };
-
-        public static Dictionary<string, Config> NoDiscountConfigs => new Dictionary<string, Config>
-        {
-            { "ITEM00001", new Config("羽毛球", 1m, "个", new List<DiscountType>()) },
-            { "ITEM00003", new Config("苹果",  5.5m, "斤", new List<DiscountType>()) },
-            { "ITEM00005", new Config("羽毛球",  3m, "瓶", new List<DiscountType>()) }
         };
     }
 }
