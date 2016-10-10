@@ -25,10 +25,22 @@ namespace Cashier
             {
                 Equal(Category.QuantityWithUnit, "5个");
             }
+
+            [Fact]
+            public void ShouldCalculateSubtotal()
+            {
+                Equal(Category.Subtotal, 4);
+            }
             [Fact]
             public void ShouldCalculateSubtotalWithoutDiscount()
             {
                 Equal(Category.SubtotalWithOutDiscount, 5);
+            }
+
+            [Fact]
+            public void ShouldCalculateSaved()
+            {
+                Equal(Category.Saved, 1);
             }
             [Fact]
             public void ShouldPrintCategorySummary()

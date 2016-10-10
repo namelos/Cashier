@@ -49,6 +49,7 @@ namespace Cashier
             new NoDiscount().Discount(Config.Price, Item.Quantity);
         public decimal Subtotal =>
             DiscountFormula.Discount.Discount(Config.Price, Item.Quantity);
+        public decimal Saved => SubtotalWithOutDiscount - Subtotal;
         public string Show => 
             $"名称: {Config.Name}, 数量: {QuantityWithUnit}, 单价: {Config.Price}(元), 小计: {Subtotal}(元)\n";
     }
