@@ -30,9 +30,6 @@ namespace Cashier
                 Equal(Category.SubtotalWithOutDiscount, 5);
             [Fact]
             public void ShouldCalculateSaved() => Equal(Category.Saved, 1);
-            [Fact]
-            public void ShouldPrintCategorySummary() => Equal(Category.Show, 
-                $"名称: {Config.Name}, 数量: {Item.Quantity}{Config.Unit}, 单价: {Config.Price}(元), 小计: {Category.Subtotal}(元)\n");
         }
 
         public class ModelTest
