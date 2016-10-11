@@ -10,6 +10,28 @@ namespace Cashier
 {
     public class Test
     {
+        public class ParserTest
+        {
+            public class ItemParserTest
+            {
+                [Fact]
+                public void ShouldParseSingularItemInput()
+                {
+                    var parsed = new ItemParser(Fixture.SingularItemInput);
+                    Equal(parsed.Code, "ITEM00001");
+                    Equal(parsed.Quantity, 1);
+                }
+
+                [Fact]
+                public void ShouldParsePluralItemInput()
+                {
+                    var parsed = new ItemParser(Fixture.PluralItemInput);
+                    Equal(parsed.Code, "ITEM00003");
+                    Equal(parsed.Quantity, 2);
+                }
+            }
+        }
+
         public class CategoryTest
         {
             public Item Item { get; } = Fixture.Item;
@@ -142,6 +164,21 @@ namespace Cashier
             { "ITEM00001", new Config("羽毛球", 1m, "个", new List<DiscountType> { DiscountType.BuyTwoGetOneFree} ) },
             { "ITEM00003", new Config("苹果",  5.5m, "斤", new List<DiscountType>()) },
             { "ITEM00005", new Config("羽毛球",  3m, "瓶", new List<DiscountType> { DiscountType.BuyTwoGetOneFree} ) }
+        };
+
+        public static string SingularItemInput => "ITEM00001";
+        public static string PluralItemInput => "ITEM00003-2";
+        public static string[] Input => new[]
+        {
+            "ITEM00001",
+            "ITEM00001",
+            "ITEM00001",
+            "ITEM00001",
+            "ITEM00001",
+            "ITEM00003-2",
+            "ITEM00005",
+            "ITEM00005",
+            "ITEM00005"
         };
     }
 }
