@@ -164,6 +164,13 @@ namespace Cashier
                 [Fact]
                 public void ShouldShowAmountWithUnit() => 
                     Equal(CategoryView.AmountWithUnit, $"{Category.Item.Quantity}{Category.Config.Unit}");
+                [Fact]
+                public void ShouldShowCategory()
+                {
+                    var item = Category.Item;
+                    var config = Category.Config;
+                    Equal(CategoryView.Show, $"名称:{config.Name},数量:{CategoryView.AmountWithUnit},单价:{config.Price}(元),小计:{Category.Subtotal}(元),节省{Category.Saved}(元)\n");
+                }
             }
         }
     }

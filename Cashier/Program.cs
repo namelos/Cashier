@@ -139,6 +139,7 @@ namespace Cashier
         }
 
         public string AmountWithUnit => $"{Category.Item.Quantity}{Category.Config.Unit}";
+        public string Show => $"名称:{Category.Config.Name},数量:{AmountWithUnit},单价:{Category.Config.Price}(元),小计:{Category.Subtotal}(元),节省{Category.Saved}(元)\n";
     }
 
     public enum DiscountType
