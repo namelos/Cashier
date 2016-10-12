@@ -167,9 +167,19 @@ namespace Cashier
                 [Fact]
                 public void ShouldShowCategory()
                 {
-                    var item = Category.Item;
                     var config = Category.Config;
-                    Equal(CategoryView.Show, $"名称:{config.Name},数量:{CategoryView.AmountWithUnit},单价:{config.Price}(元),小计:{Category.Subtotal}(元),节省{Category.Saved}(元)\n");
+                    Equal(CategoryView.Show, $"名称:{config.Name}, 数量:{CategoryView.AmountWithUnit}, 单价:{config.Price}(元), 小计:{Category.Subtotal}(元)\n");
+                }
+                [Fact]
+                public void ShouldShowCategoryWithNinetyFivePercentDiscount()
+                {
+                    var category = new Category(Fixture.Item, Fixture.ConfigWithNinetyFiveDiscount);
+                    var categoryView = new CategoryView(category);
+                    Equal(categoryView.Show, $"名称:{category.Config.Name}, " +
+                                             $"数量:{categoryView.AmountWithUnit}, " +
+                                             $"单价:{category.Config.Price}(元), " +
+                                             $"小计:{category.Subtotal}(元), " +
+                                             $"节省:{category.Saved}(元)\n");
                 }
             }
         }
@@ -185,6 +195,7 @@ namespace Cashier
             new Item ("ITEM00005", 3),
         };
         public static Config Config => new Config("羽毛球", 1, "个", new List<DiscountType> { DiscountType.BuyTwoGetOneFree } );
+        public static Config ConfigWithNinetyFiveDiscount => new Config("羽毛球", 1, "个", new List<DiscountType> { DiscountType.NintyFivePercentDiscount } );
         public static Dictionary<string, Config> Configs => new Dictionary<string, Config>
         {
             { "ITEM00001", new Config("羽毛球", 1m, "个", new List<DiscountType> { DiscountType.BuyTwoGetOneFree} ) },
