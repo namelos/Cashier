@@ -124,9 +124,17 @@ namespace Cashier
         {
             Model = model;
         }
+
+        public string Categories => Model.Categories
+            .Select(category => new CategoryView(category).Show)
+            .Aggregate((x, y) => x + y);
         public string Header => "***<没钱赚商店>购物清单***\n";
         public string Splitter => "----------------------\n";
         public string Footer => "**********************\n";
+        public void Render()
+        {
+            Console.Write(Header + Categories + Splitter + Footer);
+        }
     }
 
     public class CategoryView
@@ -138,7 +146,7 @@ namespace Cashier
             Category = category;
         }
         public string AmountWithUnit => $"{Category.Item.Quantity}{Category.Config.Unit}";
-        public string NinetyFivePercentBonus => Category.Config.Discounts.Contains(DiscountType.NintyFivePercentDiscount) ?
+        public string NinetyFivePercentBonus => Category.Config.Discounts.Contains(DiscountType.NintyFivePercentDiscount) ? 
             $", 节省:{Category.Saved}(元)" : string.Empty;
         public string Show => $"名称:{Category.Config.Name}, " +
                               $"数量:{AmountWithUnit}, " +
