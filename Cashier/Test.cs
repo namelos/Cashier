@@ -54,8 +54,8 @@ namespace Cashier
                 Category = new Category(Item, Config);
             }
             [Fact]
-            public void ShouldGetQuantityWithUnit() 
-                => Equal(Category.QuantityWithUnit, "5个");
+            public void ShouldGetQuantityWithUnit() => 
+                Equal(Category.QuantityWithUnit, "5个");
             [Fact]
             public void ShouldCalculateSubtotal() =>
                 Equal(Category.Subtotal, 4);
