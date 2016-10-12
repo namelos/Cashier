@@ -51,9 +51,6 @@ namespace Cashier
                 Category = new Category(Item, Config);
             }
             [Fact]
-            public void ShouldGetQuantityWithUnit() => 
-                Equal(Category.QuantityWithUnit, "5个");
-            [Fact]
             public void ShouldCalculateSubtotal() =>
                 Equal(Category.Subtotal, 4);
             [Fact]
@@ -155,6 +152,19 @@ namespace Cashier
 
         public class ViewTest
         {
+            public class CategoryViewTest
+            {
+                public Category Category { get; set; }
+                public CategoryView CategoryView { get; set; }
+                public CategoryViewTest()
+                {
+                    Category = new Category(Fixture.Item, Fixture.Config);
+                    CategoryView = new CategoryView(Category);
+                }
+                [Fact]
+                public void ShouldShowAmountWithUnit() => 
+                    Equal(CategoryView.AmountWithUnit, $"{Category.Item.Quantity}{Category.Config.Unit}");
+            }
         }
     }
 

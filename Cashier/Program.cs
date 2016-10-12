@@ -8,6 +8,11 @@ namespace Cashier
     {
         static void Main(string[] args)
         {
+            var inputs = Fixture.Input;
+            var configs = Fixture.Configs;
+            var parsedResult = new Parser(inputs);
+            var model = new Model(parsedResult.Items, configs);
+
         }
     }
 
@@ -78,7 +83,6 @@ namespace Cashier
             Config = config;
             DiscountFormula = new DiscountFormula(config.Discounts);
         }
-        public string QuantityWithUnit => $"{Item.Quantity}{Config.Unit}";
         public decimal SubtotalWithOutDiscount =>
             new NoDiscount().Discount(Config.Price, Item.Quantity);
         public decimal Subtotal =>
@@ -123,6 +127,18 @@ namespace Cashier
         public string Header => "***<没钱赚商店>购物清单***\n";
         public string Splitter => "----------------------\n";
         public string Footer => "**********************\n";
+    }
+
+    public class CategoryView
+    {
+        public Category Category;
+
+        public CategoryView(Category category)
+        {
+            Category = category;
+        }
+
+        public string AmountWithUnit => $"{Category.Item.Quantity}{Category.Config.Unit}";
     }
 
     public enum DiscountType
