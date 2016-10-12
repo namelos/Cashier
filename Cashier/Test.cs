@@ -12,6 +12,18 @@ namespace Cashier
     {
         public class ParserTest
         {
+            [Fact]
+            public void ShouldGroupInputsToItems()
+            {
+                var parsedItems = new Parser(Fixture.Input).ParsedItems.ToList();
+                var item00001 = parsedItems.Find(x => x.Code == "ITEM00001");
+                Equal(item00001.Quantity, 5);
+                var item00003 = parsedItems.Find(x => x.Code == "ITEM00003");
+                Equal(item00003.Quantity, 2);
+                var item00005 = parsedItems.Find(x => x.Code == "ITEM00005");
+                Equal(item00005.Quantity, 3);
+            }
+
             public class ItemParserTest
             {
                 [Fact]

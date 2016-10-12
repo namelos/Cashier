@@ -13,23 +13,42 @@ namespace Cashier
     {
         static void Main(string[] args)
         {
-            var a = "ITEM00003".Split('-').ToList();
-            var code = a[0];
-            var quantity = a[1] != null ? int.Parse(a[1]) : 1;
         }
     }
 
     public class Parser
     {
+        public Parser(IEnumerable<string> inputs)
+        {
+            ParsedItems = inputs
+                .Select(input => new ItemParser(input))
+                .GroupBy(parsedItem => parsedItem.Code)
+                .Select(groupedItem =>
+                {
+                    return groupedItem.Aggregate((item1, item2) =>
+                    {
+                        item1.addQuantity(item2.Quantity);
+                        return item1;
+                    });
+                }).ToList();
+        }
+        public List<ItemParser> ParsedItems;
+        public List<Item> Items => ParsedItems
+                .Select(parsedItem => new Item(parsedItem.Code, parsedItem.Quantity)).ToList();
     }
 
     public class ItemParser
     {
         public string Code { get; set; }
         public int Quantity { get; set; }
-        public ItemParser(string input)
+
+        public void addQuantity(int quantity)
         {
-            var pair = input.Split('-').ToList();
+            Quantity += quantity;
+        }
+        public ItemParser(string inputItem)
+        {
+            var pair = inputItem.Split('-').ToList();
             Code = pair[0];
             Quantity = pair.Count == 1 ? 1 : int.Parse(pair[1]);
         }
