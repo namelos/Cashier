@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit.Abstractions;
 
 namespace Cashier
 {
@@ -27,7 +22,7 @@ namespace Cashier
                 {
                     return groupedItem.Aggregate((item1, item2) =>
                     {
-                        item1.addQuantity(item2.Quantity);
+                        item1.AddQuantity(item2.Quantity);
                         return item1;
                     });
                 }).ToList();
@@ -42,7 +37,7 @@ namespace Cashier
         public string Code { get; set; }
         public int Quantity { get; set; }
 
-        public void addQuantity(int quantity)
+        public void AddQuantity(int quantity)
         {
             Quantity += quantity;
         }
