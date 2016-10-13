@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Cashier
 {
@@ -12,7 +13,9 @@ namespace Cashier
             var configs = Fixture.Configs;
             var parsedResult = new Parser(inputs);
             var model = new Model(parsedResult.Items, configs);
-
+            var view = new View(model);
+            view.Render();
+            Console.ReadLine();
         }
     }
 
