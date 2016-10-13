@@ -77,14 +77,14 @@ namespace Cashier
 
     public class Category
     {
-        public DiscountFormula DiscountFormula;
         public Item Item { get; }
         public Config Config { get; }
+        public DiscountFormula DiscountFormula { get; }
         public Category(Item item, Config config)
         {
             Item = item;
             Config = config;
-            DiscountFormula = new DiscountFormula(config.Discounts);
+            DiscountFormula = new DiscountFormula(Config.Discounts, Item.Quantity);
         }
         public decimal SubtotalWithOutDiscount =>
             new NoDiscount().Discount(Config.Price, Item.Quantity);
@@ -160,6 +160,7 @@ namespace Cashier
 
     public enum DiscountType
     {
+        None,
         BuyTwoGetOneFree,
         NintyFivePercentDiscount
     }
@@ -167,17 +168,32 @@ namespace Cashier
     public class DiscountFormula
     {
         public IDiscount Discount;
-        public DiscountFormula(List<DiscountType> discountTypes)
+        public DiscountFormula(List<DiscountType> discountTypes, int quantity)
         {
             if (discountTypes.Contains(DiscountType.BuyTwoGetOneFree) &&
                 discountTypes.Contains(DiscountType.NintyFivePercentDiscount))
-                Discount = new BothDiscount();
+            {
+                if (quantity > 2)
+                {
+                    Discount = new BuyTwoGetOneFree();
+                }
+                else
+                {
+                    Discount =  new NinetyFivePercent();
+                }
+            }
             else if (discountTypes.Contains(DiscountType.BuyTwoGetOneFree))
+            {
                 Discount = new BuyTwoGetOneFree();
+            }
             else if (discountTypes.Contains(DiscountType.NintyFivePercentDiscount))
+            {
                 Discount = new NinetyFivePercent();
+            }
             else
+            {
                 Discount = new NoDiscount();
+            }
         }
     }
 
@@ -196,13 +212,6 @@ namespace Cashier
     {
         public decimal Discount(decimal price, int quantity) =>
             0.95m*price*quantity;
-    }
-
-    public class BothDiscount : IDiscount
-    {
-        public decimal Discount(decimal price, int quantity) => quantity > 2 ? 
-            new BuyTwoGetOneFree().Discount(price, quantity) :
-            new NinetyFivePercent().Discount(price, quantity);
     }
 
     public class NoDiscount: IDiscount

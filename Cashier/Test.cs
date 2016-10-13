@@ -90,35 +90,47 @@ namespace Cashier
             public class DiscountFormulaTest
             {
                 [Fact]
-                public void ShouldReturnBothDiscountWhenThereAreBothOfDiscounts()
+                public void ShouldDiscountNinetyFiveWhenTheQuantityIsLessThanThreeWhenBothDiscountApplys()
                 {
                     var discountTypes = new List<DiscountType>
                     {
                         DiscountType.BuyTwoGetOneFree,
                         DiscountType.NintyFivePercentDiscount
                     };
-                    var discountFormula = new DiscountFormula(discountTypes).Discount;
-                    IsType<BothDiscount>(discountFormula);
+                    var discountFormula = new DiscountFormula(discountTypes, 2).Discount;
+                    IsType<NinetyFivePercent>(discountFormula);
+                }
+
+                [Fact]
+                public void ShouldBuyTwoGetOneFreeWhenTheQuantityIsLargerThanTwoWhenBothDiscountApplys()
+                {
+                    var discountTypes = new List<DiscountType>
+                    {
+                        DiscountType.BuyTwoGetOneFree,
+                        DiscountType.NintyFivePercentDiscount
+                    };
+                    var discountFormula = new DiscountFormula(discountTypes, 3).Discount;
+                    IsType<BuyTwoGetOneFree>(discountFormula);
                 }
                 [Fact]
                 public void ShouldReturnBuyTwoGetOneFreeWhenDiscountIsBuyTwoGetOneFree()
                 {
                     var discountTypes = new List<DiscountType> { DiscountType.BuyTwoGetOneFree };
-                    var discountFormula = new DiscountFormula(discountTypes).Discount;
+                    var discountFormula = new DiscountFormula(discountTypes, 1).Discount;
                     IsType<BuyTwoGetOneFree>(discountFormula);
                 }
                 [Fact]
                 public void ShouldReturnNinetyFivePercentWhenDiscountIsNinetyFivePercent()
                 {
                     var discountTypes = new List<DiscountType> { DiscountType.NintyFivePercentDiscount };
-                    var discountFormula = new DiscountFormula(discountTypes).Discount;
+                    var discountFormula = new DiscountFormula(discountTypes, 1).Discount;
                     IsType<NinetyFivePercent>(discountFormula);
                 }
                 [Fact]
                 public void ShouldReturnNoDiscountWhenThereIsNoDiscount()
                 {
                     var discountTypes = new List<DiscountType>();
-                    var discountFormula = new DiscountFormula(discountTypes).Discount;
+                    var discountFormula = new DiscountFormula(discountTypes, 1).Discount;
                     IsType<NoDiscount>(discountFormula);
                 }
             }
@@ -137,16 +149,6 @@ namespace Cashier
                 [Fact]
                 public void ShouldCalculateNinetyFivePercent() =>
                     Equal(new NinetyFivePercent().Discount(10, 10), 95);
-            }
-            public class BothDiscountTest
-            {
-                [Fact]
-                public void ShouldBuyTwoGiveOneFreeWhenBuyMoreThanTwo() =>
-                    Equal(new BothDiscount().Discount(1, 3), 2);
-
-                [Fact]
-                public void ShouldCalculateNinetyFivePercentDiscountWhenBuyLessThanThree() =>
-                    Equal(new BothDiscount().Discount(1, 2), 1.9m);
             }
         }
 
