@@ -62,9 +62,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Discount\BuyTwoGetOneFree.cs" />
+    <Compile Include="Model\Category.cs" />
+    <Compile Include="Test\CategoryTest.cs" />
+    <Compile Include="Test\Fixture.cs" />
+    <Compile Include="Test\ViewTest.cs" />
+    <Compile Include="Test\DiscountTest.cs" />
+    <Compile Include="Test\ModelTest.cs" />
+    <Compile Include="Test\ParserTest.cs" />
+    <Compile Include="View\CategoryView.cs" />
+    <Compile Include="Model\Config.cs" />
+    <Compile Include="Model\Discount\DiscountFormula.cs" />
+    <Compile Include="Model\Discount\DiscountType.cs" />
+    <Compile Include="Model\Discount\IDiscount.cs" />
+    <Compile Include="Model\Item.cs" />
+    <Compile Include="Parser\ItemParser.cs" />
+    <Compile Include="Model\Model.cs" />
+    <Compile Include="Model\Discount\NinetyFivePercent.cs" />
+    <Compile Include="Model\Discount\NoDiscount.cs" />
+    <Compile Include="Parser\Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test.cs" />
+    <Compile Include="View\View.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
