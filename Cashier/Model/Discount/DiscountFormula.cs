@@ -5,16 +5,15 @@ namespace Cashier
     public class DiscountFormula
     {
         public IDiscount Discount;
-        public DiscountFormula(List<DiscountType> discountTypes, int quantity)
+
+        public DiscountFormula(ICollection<DiscountType> discountTypes, int quantity)
         {
             if (discountTypes.Contains(DiscountType.BuyTwoGetOneFree) &&
                 discountTypes.Contains(DiscountType.NintyFivePercentDiscount))
-            {
                 if (quantity > 2)
                     Discount = new BuyTwoGetOneFree();
                 else
-                    Discount =  new NinetyFivePercent();
-            }
+                    Discount = new NinetyFivePercent();
             else if (discountTypes.Contains(DiscountType.BuyTwoGetOneFree))
                 Discount = new BuyTwoGetOneFree();
             else if (discountTypes.Contains(DiscountType.NintyFivePercentDiscount))

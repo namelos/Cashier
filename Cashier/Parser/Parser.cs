@@ -5,6 +5,8 @@ namespace Cashier
 {
     public class Parser
     {
+        public List<ItemParser> ParsedItems;
+
         public Parser(IEnumerable<string> inputs)
         {
             ParsedItems = inputs
@@ -19,7 +21,7 @@ namespace Cashier
                     });
                 }).ToList();
         }
-        public List<ItemParser> ParsedItems;
+
         public List<Item> Items => ParsedItems
             .Select(parsedItem => new Item(parsedItem.Code, parsedItem.Quantity)).ToList();
     }

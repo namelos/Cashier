@@ -18,11 +18,9 @@ namespace Cashier.Test
         public void ShouldCalculateSaved() => Equal(Category.Saved, 1);
 
         [Fact]
-        public void ShouldCalculateSubtotal() =>
-            Equal(Category.Subtotal, 4);
+        public void ShouldCalculateSubtotal() => Equal(Category.Subtotal, 4);
 
         [Fact]
-        public void ShouldCalculateSubtotalWithoutDiscount() =>
-            Equal(Category.SubtotalWithOutDiscount, 5);
+        public void ShouldCalculateSubtotalWithoutDiscount() => Equal(Category.SubtotalWithOutDiscount, 5);
     }
 }

@@ -10,7 +10,7 @@ namespace Cashier.Test
         {
             new Item("ITEM00001", 5),
             new Item("ITEM00003", 2),
-            new Item("ITEM00005", 3),
+            new Item("ITEM00005", 3)
         };
 
         public static Config Config

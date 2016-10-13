@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Text;
 using Cashier.Test;
 
 namespace Cashier
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var inputs = Fixture.Input;
             var configs = Fixture.Configs;
