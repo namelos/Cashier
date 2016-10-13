@@ -164,13 +164,9 @@ namespace Cashier
                     CategoryView = new CategoryView(Category);
                 }
                 [Fact]
-                public void ShouldShowAmountWithUnit() => 
-                    Equal(CategoryView.AmountWithUnit, $"{Category.Item.Quantity}{Category.Config.Unit}");
-                [Fact]
                 public void ShouldShowCategory()
                 {
-                    var config = Category.Config;
-                    Equal(CategoryView.Show, $"名称:{config.Name}, 数量:{CategoryView.AmountWithUnit}, 单价:{config.Price}(元), 小计:{Category.Subtotal}(元)\n");
+                    Equal(CategoryView.Show, $"名称:{Category.Config.Name}, 数量:{Category.Item.Quantity}{Category.Config.Unit}, 单价:{Category.Config.Price}(元), 小计:{Category.Subtotal}(元)\n");
                 }
                 [Fact]
                 public void ShouldShowCategoryWithNinetyFivePercentDiscount()
@@ -178,7 +174,7 @@ namespace Cashier
                     var category = new Category(Fixture.Item, Fixture.ConfigWithNinetyFiveDiscount);
                     var categoryView = new CategoryView(category);
                     Equal(categoryView.Show, $"名称:{category.Config.Name}, " +
-                                             $"数量:{categoryView.AmountWithUnit}, " +
+                                             $"数量:{category.Item.Quantity}{category.Config.Unit}, " +
                                              $"单价:{category.Config.Price}(元), " +
                                              $"小计:{category.Subtotal}(元), " +
                                              $"节省:{category.Saved}(元)\n");
